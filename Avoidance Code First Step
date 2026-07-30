@@ -1,0 +1,75 @@
+
+int ForwardPin = 4;
+int BackwardPin = 12;
+int DelayTime = 2000;
+int Distance;
+long duration;
+int TrigPin = 13;
+int EchoPin = 7;
+int ForwardPinTwo = 8;
+int BackwardPinTwo = 2;
+
+void Forward(){
+digitalWrite(ForwardPin, HIGH);
+digitalWrite(BackwardPin, LOW);
+digitalWrite(ForwardPinTwo, HIGH);
+digitalWrite(BackwardPinTwo, LOW);
+}
+void Backward(){
+digitalWrite(ForwardPin, LOW);
+digitalWrite(BackwardPin, HIGH);
+digitalWrite(ForwardPinTwo, LOW);
+digitalWrite(BackwardPinTwo, HIGH);
+}
+void Left(){
+digitalWrite(ForwardPin, HIGH);
+digitalWrite(BackwardPin, HIGH);
+digitalWrite(ForwardPinTwo, HIGH);
+digitalWrite(BackwardPinTwo, LOW);
+}
+void Right(){
+digitalWrite(ForwardPin, HIGH);
+digitalWrite(BackwardPin, LOW);
+digitalWrite(ForwardPinTwo, HIGH);
+digitalWrite(BackwardPinTwo, HIGH);
+}
+void Stop(){
+digitalWrite(ForwardPin, HIGH);
+digitalWrite(BackwardPin, HIGH);
+digitalWrite(ForwardPinTwo, HIGH);
+digitalWrite(BackwardPinTwo, HIGH);
+}
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(ForwardPin, OUTPUT);
+  pinMode(BackwardPin, OUTPUT);
+  pinMode(ForwardPinTwo, OUTPUT);
+  pinMode(BackwardPinTwo, OUTPUT);
+  pinMode(TrigPin, OUTPUT);
+  pinMode(EchoPin, INPUT);
+}
+
+void loop()
+{
+digitalWrite(TrigPin, LOW);
+delayMicroseconds(2);
+
+digitalWrite(TrigPin, HIGH);
+delayMicroseconds(10);
+digitalWrite(TrigPin, LOW);
+  
+duration = pulseIn(EchoPin, HIGH);
+Distance = duration * 0.0343 / 2;
+
+Serial.println(Distance);
+  if(Distance < 40){
+Backward();
+  delay(DelayTime);
+Left();
+  delay(DelayTime);
+  }
+  else{
+    Forward();
+  }
+}
