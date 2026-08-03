@@ -22,7 +22,7 @@ in a constant loop.
 - [x] Motor control working in simulation (forward/backward/turns)
 - [x] Ultrasonic sensor reading distances
 - [x] Obstacle-avoidance logic complete in simulation
-- [ ] Physical build (parts ordered)
-- [ ] Real-world testing and tuning
+- [x] Physical build (parts ordered)
+- [x] Real-world testing and tuning
 
 Built summer 2026 as a self-taught electronics project.
