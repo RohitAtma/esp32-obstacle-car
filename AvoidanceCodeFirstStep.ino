@@ -1,23 +1,22 @@
-
 int ForwardPin = 4;
-int BackwardPin = 12;
-int DelayTime = 2000;
+int BackwardPin = 5;
+int DelayTime = 1000;
 int Distance;
 long duration;
-int TrigPin = 13;
-int EchoPin = 7;
-int ForwardPinTwo = 8;
-int BackwardPinTwo = 2;
+int TrigPin = 14;
+int EchoPin = 25;
+int ForwardPinTwo = 12;
+int BackwardPinTwo = 13;
 
 void Forward(){
-digitalWrite(ForwardPin, HIGH);
-digitalWrite(BackwardPin, LOW);
+digitalWrite(ForwardPin, LOW);
+digitalWrite(BackwardPin, HIGH);
 digitalWrite(ForwardPinTwo, HIGH);
 digitalWrite(BackwardPinTwo, LOW);
 }
 void Backward(){
-digitalWrite(ForwardPin, LOW);
-digitalWrite(BackwardPin, HIGH);
+digitalWrite(ForwardPin, HIGH);
+digitalWrite(BackwardPin, LOW);
 digitalWrite(ForwardPinTwo, LOW);
 digitalWrite(BackwardPinTwo, HIGH);
 }
@@ -34,11 +33,12 @@ digitalWrite(ForwardPinTwo, HIGH);
 digitalWrite(BackwardPinTwo, HIGH);
 }
 void Stop(){
-digitalWrite(ForwardPin, HIGH);
-digitalWrite(BackwardPin, HIGH);
-digitalWrite(ForwardPinTwo, HIGH);
-digitalWrite(BackwardPinTwo, HIGH);
+digitalWrite(ForwardPin, LOW);
+digitalWrite(BackwardPin, LOW);
+digitalWrite(ForwardPinTwo, LOW);
+digitalWrite(BackwardPinTwo, LOW);
 }
+
 void setup()
 {
   Serial.begin(9600);
@@ -52,24 +52,36 @@ void setup()
 
 void loop()
 {
-digitalWrite(TrigPin, LOW);
-delayMicroseconds(2);
-
-digitalWrite(TrigPin, HIGH);
-delayMicroseconds(10);
-digitalWrite(TrigPin, LOW);
-  
-duration = pulseIn(EchoPin, HIGH);
-Distance = duration * 0.0343 / 2;
-
-Serial.println(Distance);
-  if(Distance < 40){
-Backward();
-  delay(DelayTime);
-Left();
-  delay(DelayTime);
+  if(millis() >= 30000){
+    Stop();
+    return;
   }
-  else{
+
+  digitalWrite(TrigPin, LOW);
+  delayMicroseconds(2);
+
+  digitalWrite(TrigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TrigPin, LOW);
+
+  duration = pulseIn(EchoPin, HIGH, 30000);
+  Distance = duration * 0.0343 / 2;
+
+  Serial.print("Duration: ");
+  Serial.print(duration);
+  Serial.print(" | Distance: ");
+  Serial.println(Distance);
+
+  if (duration == 0) {
+    Forward();
+  }
+  else if (Distance < 15) {
+    Backward();
+    delay(DelayTime);
+    Left();
+    delay(DelayTime);
+  }
+  else {
     Forward();
   }
 }
